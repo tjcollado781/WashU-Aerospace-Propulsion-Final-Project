@@ -1,0 +1,50 @@
+clc
+close all
+clear all
+
+
+A_0s = 0:0.5:15;
+A_0s(1) = 1*10^-4;
+phis = [1 2 10 1000];
+
+SFCs = zeros(length(A_0s),length(phis));
+ISPs = zeros(length(A_0s),length(phis));
+SpecificThrusts = zeros(length(A_0s),length(phis));
+AreaRatios = zeros(length(A_0s),length(phis));
+
+for i = 1:length(A_0s)
+    for j = 1:length(phis)
+        output = AirAugmentedRocketIterations(30000,A_0s(i),phis(j));
+        SFCs(i,j) = output(1);
+        ISPs(i,j) = output(2);
+        SpecificThrusts(i,j) = output(3);
+        AreaRatios(i,j) = output(4);
+    end
+end
+
+plot(A_0s,SFCs)
+title("SFC vs. Inlet Area - Launch Case")
+xlabel("Inlet Area (ft^2)")
+ylabel("SFC")
+legend('\phi = 1','\phi = 2', '\phi = 100', '\phi = 1000', 'Location', 'NorthEast')
+
+figure
+plot(A_0s,ISPs)
+title("Specific Impulse vs. Inlet Area - Launch Case")
+xlabel("Inlet Area (ft^2)")
+ylabel("Specific Impulse (s)")
+legend('\phi = 1','\phi = 2', '\phi = 100', '\phi = 1000', 'Location', 'NorthWest')
+
+figure
+plot(A_0s(2:length(A_0s)),SpecificThrusts(2:length(A_0s),:))
+title("Specific Thrust vs. Inlet Area - Launch Case")
+xlabel("Inlet Area (ft^2)")
+ylabel("Specific Thrust")
+legend('\phi = 1','\phi = 2', '\phi = 100', '\phi = 1000', 'Location', 'NorthEast')
+
+figure
+plot(A_0s(2:length(A_0s)),AreaRatios(2:length(A_0s),:))
+title("Area Ratio vs. Inlet Area - Launch Case")
+xlabel("Inlet Area (ft^2)")
+ylabel("Area Ratio")
+legend('\phi = 1','\phi = 2', '\phi = 100', '\phi = 1000', 'Location', 'NorthEast')
